@@ -1,0 +1,51 @@
+---
+layout: default
+---
+
+<div class="post">
+  <div class="post-info">
+    {% if page.author %}
+      <span>Written by</span>
+      {{ page.author }}
+    {% endif %}
+
+    {% if page.date %}
+      <br>
+      <span>on&nbsp;</span><time datetime="{{ page.date }}">{{ page.date | date: "%B %d, %Y" }}</time>
+    {% endif %}
+  </div>
+
+  <h1 class="post-title">{{ page.title }}</h1>
+  <div class="post-line"></div>
+
+<!-- 추후 태그 추가
+  {% if page.tags and page.tags.size != 0 %}
+    <div class="post-tagrow">
+    {% for tag in page.tags %}
+      <span class="post-tag">{{tag}}</span>
+    {% endfor %}
+    </div>
+  {% endif %}
+-->
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+</div>
+
+<!-- 지금 page.next 인걸 paginator로 바꿔야함? -->
+<div class="pagination">
+  {% if page.next.url %}
+    <a href="{{ page.next.url | prepend: site.baseurl }}" class="left arrow">&#8592;</a>
+  {% endif %}
+  {% if page.previous.url %}
+    <a href="{{ page.previous.url | prepend: site.baseurl }}" class="right arrow">&#8594;</a>
+  {% endif %}
+
+  <a href="#" class="top">Top</a>
+</div>
+
+{% if page.comments %}
+  {% include disqus_comments.html %}
+{% endif %}

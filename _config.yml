@@ -1,0 +1,54 @@
+# Site settings
+title:          ELZINO PROJECT
+description:    "Small blog for logging my life"
+baseurl:        ""
+url:            "https://elzino.github.io"
+
+# Google Analytics
+google_analytics: UA-152593731-1
+
+# Author
+author:
+  name:         Jinho Lee
+  url:          https://elzino.github.io
+  email:        elzinomaster@gmail.com
+
+# Build settings
+markdown:       kramdown
+include:
+  - _pages
+  - _categories
+
+# Assets
+sass:
+  sass_dir:     _sass
+  style:        compressed
+
+# Gems
+plugins:
+  - jekyll-feed
+  - jekyll-paginate-v2
+  - jekyll-seo-tag
+  - jemoji
+
+# Permalinks
+permalink:      /:categories/:year-:month-:day/:title
+pagination:
+  enabled: true
+  per_page: 5
+  permalink: '/page/:num/'
+  title: ':title'
+  limit: 0
+  sort_field: 'date'
+  sort_reverse: true
+
+  trail: 
+    before: 2
+    after: 2
+
+
+# Excludes
+exclude: [ Gemfile, Gemfile.lock, tale.gemspec ]
+
+# Disqus (Set to your disqus id)
+disqus: elzino
