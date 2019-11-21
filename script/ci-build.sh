@@ -25,4 +25,4 @@ git config user.email "elzinomaster@gmail.com"
 git config user.name "Jinho Lee"
 git add --all
 git commit -a -m "Travis #$TRAVIS_BUILD_NUMBER"
-git push --force origin gh-pages
+git push --force origin master
