@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RAdam : On the Variance of the Adaptive Learning Rate and Beyond</title>
+  <!-- Begin Jekyll SEO tag v2.5.0 -->
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="RAdam : On the Variance of the Adaptive Learning Rate and Beyond" />
+<meta name="author" content="Jinho Lee" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="논문 링크 : arxiv 저자 코드 : Author’s code 카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(:cry:) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다." />
+<meta property="og:description" content="논문 링크 : arxiv 저자 코드 : Author’s code 카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(:cry:) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다." />
+<link rel="canonical" href="http://localhost:4000/papers/2019-11-21/radam" />
+<meta property="og:url" content="http://localhost:4000/papers/2019-11-21/radam" />
+<meta property="og:site_name" content="ELZINO PROJECT" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-21T00:00:00+09:00" />
+<script type="application/ld+json">
+{"headline":"RAdam : On the Variance of the Adaptive Learning Rate and Beyond","dateModified":"2019-11-21T00:00:00+09:00","datePublished":"2019-11-21T00:00:00+09:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/papers/2019-11-21/radam"},"url":"http://localhost:4000/papers/2019-11-21/radam","author":{"@type":"Person","name":"Jinho Lee"},"description":"논문 링크 : arxiv 저자 코드 : Author’s code 카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(:cry:) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다.","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding|Noto+Sans+KR|Noto+Serif+KR|Nanum+Myeongjo&display=swap">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="ELZINO PROJECT" />
+
+  <!-- Google Analytics-->
+  
+  
+  <!-- MAthjax -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({ messageStyle: 'none' });
+  </script>
+  <script type="text/javascript">
+    MathJax.Hub.Register.StartupHook("End",function () {
+      var math_list = document.getElementsByClassName("MathJax_Display");
+      for (var i = 0; i < math_list.length; ++i) {
+        var W = math_list[i].offsetWidth;
+        var w = math_list[i].childNodes[0].offsetWidth;
+        if (w > 0.95*W) math_list[i].style.fontSize = (95*W/w)+"%";
+      }
+    });
+  </script>
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">ELZINO PROJECT</h2>
+    </a>
+    <ul>
+      <li><a href="/about">About</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <li><a href="/papers">Paper Reviews</a></li>
+      <li><a href="/life">Life</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    
+
+    
+      <br>
+      <span>on </span><time datetime="2019-11-21 00:00:00 +0900">November 21, 2019</time>
+    
+  </div>
+
+  <h1 class="post-title">RAdam : On the Variance of the Adaptive Learning Rate and Beyond</h1>
+  <div class="post-line"></div>
+
+<!-- 추후 태그 추가
+  
+    <div class="post-tagrow">
+    
+      <span class="post-tag">deep learning</span>
+    
+      <span class="post-tag">optimizer</span>
+    
+    </div>
+  
+-->
+
+  <div class="post-content">
+    <p>논문 링크 : <a href="https://arxiv.org/abs/1908.03265">arxiv</a><br>
+저자 코드 : <a href="https://github.com/LiyuanLucasLiu/RAdam">Author’s code</a></p>
+
+<p>카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(<img class="emoji" title=":cry:" alt=":cry:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f622.png" height="20" width="20">) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다.</p>
+
+<h2 id="abstract">Abstract</h2>
+<ul>
+  <li>이 논문에서는 기존 Adaptive learning rate 방법들이 bad local optima에 빠지던 문제가 학습초기에 adpative learning rate의 variance가 크기 때문임을 보입니다.</li>
+  <li>또한 warm-up learning rate 방법도 adpative learning rate의 variance를 줄여서 잘 작동하는 것임을 보입니다.</li>
+  <li>마지막으로 Adaptive learning rate의 variance를 일정하게 만들어주는 RAdam이라는 새로운 방법을 제시합니다.</li>
+</ul>
+
+<h2 id="variance-of-adaptive-rate-in-the-early-stage">Variance of adaptive rate in the early stage</h2>
+<p>저자는 학습 초기에 샘플이 부족하기 때문에 adaptive learning rate가 부적절하게 큰 variance를 갖고, 이것이 안좋은 local optima로 이끈다는 것을 수식적으로, 또 실험적으로 보여줍니다.</p>
+
+<h3 id="수식적-분석">수식적 분석</h3>
+<p>저자는 먼저 time-step 마다 얻어지는 gradient들(\({g_1, \cdots, g_t}\))을 모두 정규분포 \( \mathcal{N}(0, \sigma^2)\)에서 i.i.d 하게 뽑힌 random variables 이라고 가정합니다. 가정에 의해 \( \frac{1}{g_1^2} \)은 the scaled inverse chi-squared distribution을 따르게 됩니다. 이때 sample이 1개인 첫번째 adaptive learning rate의 분산을 계산하면 다음의 식이 나옵니다. \[ \mathrm{Var}[\sqrt{\frac{1}{g_1^2}}] \propto \int_0^{\infty} x^{-1} e^{-x} dx \] 이 식을 통해 sample이 1개일 때 adaptive learning rate의 분산이 발산하는 것을 확인할 수 있습니다.</p>
+
+<h3 id="실험적-분석">실험적 분석</h3>
+<p><img src="https://www.dropbox.com/s/fr7w6ghn0moin91/result1.jpg?raw=1" alt="실험이미지1" width="600px">
+저자는 Adam을 warm-up을 적용한 채로, 또 다른 한번은 warm-up을 적용 안한채로 각각 학습하며 iteration마다 gradient 값의 측정해보았습니다. x축은 gradient의 절댓값을 log scale로 나타내었고 그래프의 높이는 frequency를 나타냅니다. 그리고 왼쪽 그래프는 iteration 1번째부터 100번까지의 결과, 오른쪽 그래프는 7만번까지의 결과를 보여줍니다.<br>
+실험 결과를 보면 warm-up 없이 학습한 경우 iteration이 10번도 되기 전에 gradient 값들이 상대적으로 작은 값으로 변형되는 것을 볼 수 있습니다. 이러한 결과는 초기에 bad/suspicious local optima에 빠진다는 것을 의미합니다. warm-up은 초기의 작은 update로 초기에 bad/suspicious local optima에 빠지는 것을 방지합니다.</p>
+
+<p><img src="https://www.dropbox.com/s/tne3ged8gvvjhg3/result2.jpg?raw=1" alt="실험이미지2">
+저자는 또한 Adam-2k, RAdam, Adam-eps로도 위 실험을 반복합니다.<br>
+Adam-2k는 처음 2000번 update동안 parameter를 update 시키지 않고 adaptive learing rate만을 계산하는 방법입니다. 따라서 다른 방법들과 비교를 위해 iteration이 -1999번부터 시작된다고 하고 실험을 진행하였습니다. 그 결과 bad local optima에 빠지지 않는 것을 확인 할 수 있습니다. 이는 저자의 가설에서 Adam이 초기에 sample이 부족한 것이 문제의 원인이라는 것을 입증합니다.<br>
+Adam-eps는 adaptive learning rate 식인 \(\hat{\psi}(g_1, \cdots, g_t) = \frac{\sqrt{1-\beta_2^t}}{\epsilon + \sqrt{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}}\) 에서 엡실론 값을 키워 variance를 낮추는 방법입니다. 이 결과 역시 초기의 bad local optima에 빠지지 않는 것을 보입니다.</p>
+
+<h2 id="analysis-of-adaptive-learning-rate-variance">Analysis of adaptive learning rate variance</h2>
+<p>이번에는 adaptive learning rate의 variance를 구해보고 sample의 수가 늘어날수록 variance가 감소함을 보입니다. 이때 분석의 용이함을 위해 저자는 총 3번의 근사를 시킵니다.  <br>
+첫번째 근사는 exponential moving average를 simple average로 근사시키는 것입니다. 저자는 exponential moving average가 simple average보다 더 큰 분산을 갖을 뿐더러 t가 작을때는 simple average와 차이도 상대적으로 작으므로 이 근사가 무리가 없다고 주장합니다. 
+\[p(\psi(.)) = p(\sqrt{\frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}}) \approx p(\sqrt{\frac{t}{\sum_{i=1}^t g_i^2}}) \]
+\( g_i \sim \mathcal{N}(0, \sigma^2) \)을 가졍했기 때문에 \( \frac{t}{\sum_{i=1}^t g_i^2} \sim Scale–inv–\mathcal{X}^2(t,\frac{1}{\sigma^2}) \) 입니다. 근사 시킨 값이 scaled inverse chi-square 분포를 따르므로 \(\frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}\) 또한 자유도 \( \sigma \)를 갖는 scaled inverse chi-square 분포로 가정하겠습니다. 이 가정하에서 저자는 분산을 구합니다.
+<img src="https://www.dropbox.com/s/2dm83bbd7op9t07/Theorem%201.png?raw=1" alt="Theorem 1">
+여기서 \( \mathcal{B}(.) \)은 Beta function을 의미합니다. 또한 \( \mathrm{Var}[\psi(.)] \)의 미분 값을 통해 자유도 \( \sigma \)가 증가함에 따라 분산이 단조 감소하는 것을 보입니다. 이로써 학습 초기에 sample이 부족한 것 때문에 나중보다 분산이 크다는 것을 보였습니다.</p>
+
+<h2 id="rectified-adaptive-learning-rate">Rectified adaptive learning rate</h2>
+<p>저자는 앞에서 구한 계산값을 이용해 adaptive learning rate의 분산을 일정하게 만들어주는 방법을 제시합니다. 이를 위해서 먼저 자유도인 \( \sigma \)를 \( t \)를 이용해 구합니다.</p>
+
+<h3 id="estimation-of--sigma-">Estimation of \( \sigma \)</h3>
+<p>자유도를 구하기 위해 두번째 근사를 합니다. 경제학에서 exponential moving average(EMA)는 simple moving average(SMA)로 자주 근사된다고 합니다.
+\[ p(\frac{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}{1-\beta_2^t}) \approx p(\frac{\sum_{i = 1}^{f(t, \beta_2)} g_{t+1-i}^2}{f(t, \beta_2)}) \]
+이때 \( f(t, \beta_2) \)는 SMA의 길이로 SMA가 EMA와 같은 “center of mass”를 갖도록 구해집니다. 따라서 \(f(t, \beta_2) = \frac{2}{1 - \beta_2} - 1 - \frac{2 t \beta_2^t}{1 - \beta_2^t}\) 입니다.
+\[ \frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2} \approx \frac{f(t, \beta_2)}{\sum_{i=1}^{f(t, \beta_2)} g_i^2} \sim Scale–inv–\mathcal{X}^2(\rho,\frac{1}{\sigma^2}) \]
+\[ \rho \approx f(t, \beta_2) = \frac{2}{1 - \beta_2} - 1 - \frac{2 t \beta_2^t}{1 - \beta_2^t} \]
+위와 같이 \( \rho \)의 근사값으로 \( f(t, \beta_2) \)을 이용해 \( t \)에 대한 함수로 표현할 수 있게 되었습니다. 추가로 \( \rho_t = f(t, \beta_2) \)라고 표기했을 때 \( \rho_\infty = \frac{2}{1 - \beta_2} - 1 \)가 됩니다.</p>
+
+<h3 id="variance-estimation-and-rectification">Variance estimation and rectification</h3>
+<p>위에서 분산은 자유도 \( \rho \)가 증가함에 따라 단조감소함을 보였으므로 \( \min_{\rho_t} \mathrm{Var}[\psi(.)] = \mathrm{Var}[\psi(.)]|_ {\rho_t = \rho_\infty} \)이고 이때의 분산을 \( C_{\mbox{var}} \)라고 표기하겠습니다. 저자는 학습 초기의 분산이 커서 bad local optima에 빠지는 문제를 방지하기 위해 매 timestep마다 분산이 \( C_{\mbox{var}} \)가 되도록 아래와 같이 rectification 해줍니다.
+\[
+  \mathrm{Var}[r_t \,\psi(g_1, \cdots, g_t)] = C_{\mbox{var}}
+  \quad
+  \mbox{where}
+  \quad
+  r_t = \sqrt{\frac{C_{\mbox{var}}}{\mathrm{Var}[\psi(g_1, \cdots, g_t)]}}
+\]
+위에서 \( \mathrm{Var}[\psi(.)] \) 값을 구했지만 수치적으로 불안정하므로 \( \sqrt{\psi^2(.)} \) 에 대한 1차 근사(세번째 근사)를 이용해서 다시 구하면 다음과 같습니다.
+\[ \mathrm{Var}[\psi(.)] \approx \frac{\rho_t}{2(\rho_t - 2)(\rho_t - 4)\sigma^2} \]
+분산을 \( C_{\mbox{var}} \)로 일정하게 유지시키는 \( r_t \) 값은 다음과 같습니다.
+\[
+r_t = \sqrt{\frac{(\rho_t - 4)(\rho_t - 2)\rho_\infty}{(\rho_\infty - 4)(\rho_\infty - 2)\rho_t}}
+\]
+단 \(\rho_t\)가 4보다 작을 경우 adaptive learning rate는 무시합니다. 이를 정리해 적용한 알고리즘은 다음과 같습니다.
+<img src="https://www.dropbox.com/s/lnmad7y7hac01q7/algorithm.png?raw=1" alt="Algorithm 2">
+위와 같이 Adam의 분산을 일정하게 만들어주는 방법을 통해 RAdam이라는 새로운 방법을 제안합니다.</p>
+<h3 id="in-comparison-with-warmup">In comparison with warmup</h3>
+<p>저자는 \( r_t \)가 결국 gradient에 \( \frac{min(t, T_w)}{T_w} \)을 곱하는 heuristic linear warmup과 비슷한 역할을 한다고 말합니다. 하지만 RAdam은 \( T_w \)와 같은 hyperparameter를 추가로 필요하지 않는 장점이 있습니다. 또한 뒤에서 살펴볼 실험 결과에 따르면 Adam-warmup은 learning rate를 증가시킬 step 수에 따라 learning rate에 민감함을 보이고, RAdam은 robust함을 보입니다.</p>
+
+<h2 id="results">Results</h2>
+<p>저자는 Language Modeling을 평가하기 위해 One Billion Word 데이터셋을, Image Classification을 평가하기 위해 Cifar10 와 ImageNet 데이터셋을 사옹했습니다.</p>
+
+<h3 id="radam-vs-vanila-adam-vs-sgd">RAdam vs Vanila Adam vs SGD</h3>
+<p>저자는 먼저 vanila Adam과 비교해 RAdam이 더 좋은 성능을 내는 것을 보입니다.
+<img src="https://www.dropbox.com/s/fbrghwh9tjiddyq/result3.png?raw=1" alt="Result1">
+또한 learning rate의 변화에 robust함을 보입니다.
+<img src="https://www.dropbox.com/s/1u2gbp19lu981zm/result4.png?raw=1" alt="Result2"></p>
+
+<h3 id="radam-vs-adam-warmup">RAdam vs Adam-warmup</h3>
+<p>RAdam은 위에서 말했듯이 Adam-warmup과 달리 처음에 learning rate를 증가시킬 step수를 지정하지 않아도 되므로 hyper-parameter가 하나 더 적습니다. 또한 Adam-warmup은 learning rate를 증가시킬 step 수에 따라 learning rate에 민감함을 보이고, RAdam은 robust함을 보입니다.
+<img src="https://www.dropbox.com/s/l6az85a1i2r8mep/result5.png?raw=1" alt="Result3"></p>
+
+<h2 id="느낀점">느낀점</h2>
+<p>optimization에 관련된 논문은 처음으로 읽어봤습니다. Adam이 나온 이후로 모든 task에 general하게 잘 작동하는 optimizer가 나오지 않은것으로 알고 있습니다. 새로운 시각으로 접근해서 재밌었고 논문에서 이론적 증명을 통해 RAdam의 정당성을 보여준 점이 좋았습니다.</p>
+
+<h2 id="reference">Reference</h2>
+<p><a href="https://medium.com/@lessw/new-state-of-the-art-ai-optimizer-rectified-adam-radam-5d854730807b">New State of the Art AI Optimizer: Rectified Adam (RAdam). - Less Wright</a></p>
+
+  </div>
+
+</div>
+
+<!-- 지금 page.next 인걸 paginator로 바꿔야함? -->
+<div class="pagination">
+  
+  
+    <a href="/projects/2019-11-16/naver-ai-hackathon-review" class="right arrow">→</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+
+  <!-- Start disqus -->
+<script src="/assets/js/disqusLoader.js"></script>
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    this.page.url = "http://localhost:4000/papers/2019-11-21/radam";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "/papers/2019-11-21/radam"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://elzino-projects.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+<!-- End disqus -->
+
+
+    </main>
+    <footer>
+  <div class="footer_wrap">
+    <div class="name">
+      Jinho Lee
+    </div>
+
+    <a href="mailto:elzinomaster@gmail.com" class="email">
+      elzinomaster@gmail.com
+    </a>
+
+    <div class="footer_row">
+      <a href="http://github.com/elzino" target="_blank" class="icon">
+        <svg viewbox="0 0 32.6 31.8">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M16.3,0C7.3,0,0,7.3,0,16.3c0,7.2,4.7,13.3,11.1,15.5
+          c0.8,0.1,1.1-0.4,1.1-0.8c0-0.4,0-1.4,0-2.8c-4.5,1-5.5-2.2-5.5-2.2c-0.7-1.9-1.8-2.4-1.8-2.4c-1.5-1,0.1-1,0.1-1
+          c1.6,0.1,2.5,1.7,2.5,1.7c1.5,2.5,3.8,1.8,4.7,1.4c0.1-1.1,0.6-1.8,1-2.2c-3.6-0.4-7.4-1.8-7.4-8.1c0-1.8,0.6-3.2,1.7-4.4
+          C7.4,10.7,6.8,9,7.7,6.8c0,0,1.4-0.4,4.5,1.7c1.3-0.4,2.7-0.5,4.1-0.5c1.4,0,2.8,0.2,4.1,0.5c3.1-2.1,4.5-1.7,4.5-1.7
+          c0.9,2.2,0.3,3.9,0.2,4.3c1,1.1,1.7,2.6,1.7,4.4c0,6.3-3.8,7.6-7.4,8c0.6,0.5,1.1,1.5,1.1,3c0,2.2,0,3.9,0,4.5
+          c0,0.4,0.3,0.9,1.1,0.8c6.5-2.2,11.1-8.3,11.1-15.5C32.6,7.3,25.3,0,16.3,0z"></path>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/jinho-lee-3a850b144/" target="_blank" class="icon">
+        <svg viewbox="0 0 38.3 38.3">
+          <g>
+            <rect x="0.8" y="12.8" width="7.9" height="25.5"></rect>
+            <ellipse cx="4.7" cy="4.7" rx="4.7" ry="4.7"></ellipse>
+            <path d="M21.3,24.9c0-3.6,1.7-5.7,4.8-5.7c2.9,0,4.3,2.1,4.3,5.7c0,3.7,0,13.4,0,13.4h7.9c0,0,0-9.3,0-16.2
+              c0-6.8-3.9-10.1-9.3-10.1s-7.7,4.2-7.7,4.2v-3.4h-7.6v25.5h7.6C21.3,38.3,21.3,28.8,21.3,24.9z"></path>
+          </g>
+        </svg>
+      </a>
+      <a href="http://instagram.com/_elzino_" target="_blank" class="icon">
+        <svg viewbox="0 0 40.2 40.3">
+          <g>
+            <path d="M20.2,3.6c5.4,0,6,0,8.2,0.1c2,0.1,3,0.4,3.7,0.7C33,4.8,33.7,5.3,34.4,6s1.1,1.4,1.5,2.3
+          c0.3,0.7,0.6,1.8,0.7,3.7c0.1,2.1,0.1,2.8,0.1,8.2s0,6-0.1,8.2c-0.1,2-0.4,3-0.7,3.7c-0.4,0.9-0.8,1.6-1.5,2.3s-1.4,1.1-2.3,1.5
+          c-0.7,0.3-1.8,0.6-3.7,0.7c-2.1,0.1-2.8,0.1-8.2,0.1s-6,0-8.2-0.1c-2-0.1-3-0.4-3.7-0.7c-0.9-0.4-1.6-0.8-2.3-1.5S4.9,33,4.5,32.1
+          c-0.3-0.7-0.6-1.8-0.7-3.7c-0.1-2.1-0.1-2.8-0.1-8.2s0-6,0.1-8.2c0.1-2,0.4-3,0.7-3.7C4.8,7.3,5.3,6.7,6,6s1.4-1.1,2.3-1.5
+          C9,4.2,10.1,3.8,12,3.8C14.2,3.7,14.8,3.6,20.2,3.6 M20.2,0c-5.5,0-6.2,0-8.3,0.1C9.7,0.2,8.2,0.6,7,1.1C5.6,1.6,4.5,2.3,3.4,3.4
+          S1.6,5.6,1.1,7c-0.5,1.3-0.8,2.8-0.9,4.9C0,14,0,14.7,0,20.2s0,6.2,0.1,8.3s0.4,3.6,0.9,4.9c0.5,1.3,1.2,2.5,2.3,3.6
+          s2.2,1.8,3.6,2.3c1.3,0.5,2.8,0.8,4.9,0.9c2.2,0.1,2.8,0.1,8.3,0.1s6.2,0,8.3-0.1s3.6-0.4,4.9-0.9c1.3-0.5,2.5-1.2,3.6-2.3
+          s1.8-2.2,2.3-3.6c0.5-1.3,0.8-2.8,0.9-4.9c0.1-2.2,0.1-2.8,0.1-8.3s0-6.2-0.1-8.3S39.7,8.3,39.2,7S38,4.5,36.9,3.4
+          s-2.2-1.8-3.6-2.3c-1.3-0.5-2.8-0.8-4.9-0.9C26.3,0,25.7,0,20.2,0L20.2,0L20.2,0z"></path>
+            <path d="M20.2,9.8c-5.7,0-10.4,4.6-10.4,10.4s4.6,10.4,10.4,10.4S30.6,26,30.6,20.2S25.9,9.8,20.2,9.8L20.2,9.8z
+          M20.2,26.9c-3.7,0-6.7-3-6.7-6.7s3-6.7,6.7-6.7s6.7,3,6.7,6.7C26.9,23.9,23.9,26.9,20.2,26.9L20.2,26.9z"></path>
+            <path d="M33.4,9.4c0,1.3-1.1,2.4-2.4,2.4s-2.4-1.1-2.4-2.4s1-2.4,2.3-2.4C32.2,7,33.4,8.1,33.4,9.4L33.4,9.4z">
+            </path>
+          </g>
+        </svg>
+      </a>
+      <span class="copyright">
+        © <time datetime="2019-11-21 22:20:52 +0900">2019</time> Jinho Lee.
+      </span>
+    </div>
+
+  </div>
+</footer>
+  </body>
+</html>

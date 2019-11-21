@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-11-21T22:20:52+09:00</updated><id>http://localhost:4000/</id><title type="html">ELZINO PROJECT</title><subtitle>Small blog for logging my life</subtitle><author><name>Jinho Lee</name><email>elzinomaster@gmail.com</email></author><entry><title type="html">RAdam : On the Variance of the Adaptive Learning Rate and Beyond</title><link href="http://localhost:4000/papers/2019-11-21/radam" rel="alternate" type="text/html" title="RAdam : On the Variance of the Adaptive Learning Rate and Beyond" /><published>2019-11-21T00:00:00+09:00</published><updated>2019-11-21T00:00:00+09:00</updated><id>http://localhost:4000/papers/2019-11-21/radam</id><content type="html" xml:base="http://localhost:4000/papers/2019-11-21/radam">&lt;p&gt;논문 링크 : &lt;a href=&quot;https://arxiv.org/abs/1908.03265&quot;&gt;arxiv&lt;/a&gt;&lt;br /&gt;
+저자 코드 : &lt;a href=&quot;https://github.com/LiyuanLucasLiu/RAdam&quot;&gt;Author’s code&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(:cry:) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;이 논문에서는 기존 Adaptive learning rate 방법들이 bad local optima에 빠지던 문제가 학습초기에 adpative learning rate의 variance가 크기 때문임을 보입니다.&lt;/li&gt;
+  &lt;li&gt;또한 warm-up learning rate 방법도 adpative learning rate의 variance를 줄여서 잘 작동하는 것임을 보입니다.&lt;/li&gt;
+  &lt;li&gt;마지막으로 Adaptive learning rate의 variance를 일정하게 만들어주는 RAdam이라는 새로운 방법을 제시합니다.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;variance-of-adaptive-rate-in-the-early-stage&quot;&gt;Variance of adaptive rate in the early stage&lt;/h2&gt;
+&lt;p&gt;저자는 학습 초기에 샘플이 부족하기 때문에 adaptive learning rate가 부적절하게 큰 variance를 갖고, 이것이 안좋은 local optima로 이끈다는 것을 수식적으로, 또 실험적으로 보여줍니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;수식적-분석&quot;&gt;수식적 분석&lt;/h3&gt;
+&lt;p&gt;저자는 먼저 time-step 마다 얻어지는 gradient들(\({g_1, \cdots, g_t}\))을 모두 정규분포 \( \mathcal{N}(0, \sigma^2)\)에서 i.i.d 하게 뽑힌 random variables 이라고 가정합니다. 가정에 의해 \( \frac{1}{g_1^2} \)은 the scaled inverse chi-squared distribution을 따르게 됩니다. 이때 sample이 1개인 첫번째 adaptive learning rate의 분산을 계산하면 다음의 식이 나옵니다. \[ \mathrm{Var}[\sqrt{\frac{1}{g_1^2}}] \propto \int_0^{\infty} x^{-1} e^{-x} dx \] 이 식을 통해 sample이 1개일 때 adaptive learning rate의 분산이 발산하는 것을 확인할 수 있습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;실험적-분석&quot;&gt;실험적 분석&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://www.dropbox.com/s/fr7w6ghn0moin91/result1.jpg?raw=1&quot; alt=&quot;실험이미지1&quot; width=&quot;600px&quot; /&gt;
+저자는 Adam을 warm-up을 적용한 채로, 또 다른 한번은 warm-up을 적용 안한채로 각각 학습하며 iteration마다 gradient 값의 측정해보았습니다. x축은 gradient의 절댓값을 log scale로 나타내었고 그래프의 높이는 frequency를 나타냅니다. 그리고 왼쪽 그래프는 iteration 1번째부터 100번까지의 결과, 오른쪽 그래프는 7만번까지의 결과를 보여줍니다.&lt;br /&gt;
+실험 결과를 보면 warm-up 없이 학습한 경우 iteration이 10번도 되기 전에 gradient 값들이 상대적으로 작은 값으로 변형되는 것을 볼 수 있습니다. 이러한 결과는 초기에 bad/suspicious local optima에 빠진다는 것을 의미합니다. warm-up은 초기의 작은 update로 초기에 bad/suspicious local optima에 빠지는 것을 방지합니다.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.dropbox.com/s/tne3ged8gvvjhg3/result2.jpg?raw=1&quot; alt=&quot;실험이미지2&quot; /&gt;
+저자는 또한 Adam-2k, RAdam, Adam-eps로도 위 실험을 반복합니다.&lt;br /&gt;
+Adam-2k는 처음 2000번 update동안 parameter를 update 시키지 않고 adaptive learing rate만을 계산하는 방법입니다. 따라서 다른 방법들과 비교를 위해 iteration이 -1999번부터 시작된다고 하고 실험을 진행하였습니다. 그 결과 bad local optima에 빠지지 않는 것을 확인 할 수 있습니다. 이는 저자의 가설에서 Adam이 초기에 sample이 부족한 것이 문제의 원인이라는 것을 입증합니다.&lt;br /&gt;
+Adam-eps는 adaptive learning rate 식인 \(\hat{\psi}(g_1, \cdots, g_t) = \frac{\sqrt{1-\beta_2^t}}{\epsilon + \sqrt{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}}\) 에서 엡실론 값을 키워 variance를 낮추는 방법입니다. 이 결과 역시 초기의 bad local optima에 빠지지 않는 것을 보입니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;analysis-of-adaptive-learning-rate-variance&quot;&gt;Analysis of adaptive learning rate variance&lt;/h2&gt;
+&lt;p&gt;이번에는 adaptive learning rate의 variance를 구해보고 sample의 수가 늘어날수록 variance가 감소함을 보입니다. 이때 분석의 용이함을 위해 저자는 총 3번의 근사를 시킵니다.  &lt;br /&gt;
+첫번째 근사는 exponential moving average를 simple average로 근사시키는 것입니다. 저자는 exponential moving average가 simple average보다 더 큰 분산을 갖을 뿐더러 t가 작을때는 simple average와 차이도 상대적으로 작으므로 이 근사가 무리가 없다고 주장합니다. 
+\[p(\psi(.)) = p(\sqrt{\frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}}) \approx p(\sqrt{\frac{t}{\sum_{i=1}^t g_i^2}}) \]
+\( g_i \sim \mathcal{N}(0, \sigma^2) \)을 가졍했기 때문에 \( \frac{t}{\sum_{i=1}^t g_i^2} \sim Scale–inv–\mathcal{X}^2(t,\frac{1}{\sigma^2}) \) 입니다. 근사 시킨 값이 scaled inverse chi-square 분포를 따르므로 \(\frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}\) 또한 자유도 \( \sigma \)를 갖는 scaled inverse chi-square 분포로 가정하겠습니다. 이 가정하에서 저자는 분산을 구합니다.
+&lt;img src=&quot;https://www.dropbox.com/s/2dm83bbd7op9t07/Theorem%201.png?raw=1&quot; alt=&quot;Theorem 1&quot; /&gt;
+여기서 \( \mathcal{B}(.) \)은 Beta function을 의미합니다. 또한 \( \mathrm{Var}[\psi(.)] \)의 미분 값을 통해 자유도 \( \sigma \)가 증가함에 따라 분산이 단조 감소하는 것을 보입니다. 이로써 학습 초기에 sample이 부족한 것 때문에 나중보다 분산이 크다는 것을 보였습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;rectified-adaptive-learning-rate&quot;&gt;Rectified adaptive learning rate&lt;/h2&gt;
+&lt;p&gt;저자는 앞에서 구한 계산값을 이용해 adaptive learning rate의 분산을 일정하게 만들어주는 방법을 제시합니다. 이를 위해서 먼저 자유도인 \( \sigma \)를 \( t \)를 이용해 구합니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;estimation-of--sigma-&quot;&gt;Estimation of \( \sigma \)&lt;/h3&gt;
+&lt;p&gt;자유도를 구하기 위해 두번째 근사를 합니다. 경제학에서 exponential moving average(EMA)는 simple moving average(SMA)로 자주 근사된다고 합니다.
+\[ p(\frac{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2}{1-\beta_2^t}) \approx p(\frac{\sum_{i = 1}^{f(t, \beta_2)} g_{t+1-i}^2}{f(t, \beta_2)}) \]
+이때 \( f(t, \beta_2) \)는 SMA의 길이로 SMA가 EMA와 같은 “center of mass”를 갖도록 구해집니다. 따라서 \(f(t, \beta_2) = \frac{2}{1 - \beta_2} - 1 - \frac{2 t \beta_2^t}{1 - \beta_2^t}\) 입니다.
+\[ \frac{1-\beta_2^t}{(1 - \beta_2)\sum_{i = 1}^t \beta_2^{t-i}g_i^2} \approx \frac{f(t, \beta_2)}{\sum_{i=1}^{f(t, \beta_2)} g_i^2} \sim Scale–inv–\mathcal{X}^2(\rho,\frac{1}{\sigma^2}) \]
+\[ \rho \approx f(t, \beta_2) = \frac{2}{1 - \beta_2} - 1 - \frac{2 t \beta_2^t}{1 - \beta_2^t} \]
+위와 같이 \( \rho \)의 근사값으로 \( f(t, \beta_2) \)을 이용해 \( t \)에 대한 함수로 표현할 수 있게 되었습니다. 추가로 \( \rho_t = f(t, \beta_2) \)라고 표기했을 때 \( \rho_\infty = \frac{2}{1 - \beta_2} - 1 \)가 됩니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;variance-estimation-and-rectification&quot;&gt;Variance estimation and rectification&lt;/h3&gt;
+&lt;p&gt;위에서 분산은 자유도 \( \rho \)가 증가함에 따라 단조감소함을 보였으므로 \( \min_{\rho_t} \mathrm{Var}[\psi(.)] = \mathrm{Var}[\psi(.)]|_ {\rho_t = \rho_\infty} \)이고 이때의 분산을 \( C_{\mbox{var}} \)라고 표기하겠습니다. 저자는 학습 초기의 분산이 커서 bad local optima에 빠지는 문제를 방지하기 위해 매 timestep마다 분산이 \( C_{\mbox{var}} \)가 되도록 아래와 같이 rectification 해줍니다.
+\[
+  \mathrm{Var}[r_t \,\psi(g_1, \cdots, g_t)] = C_{\mbox{var}}
+  \quad
+  \mbox{where}
+  \quad
+  r_t = \sqrt{\frac{C_{\mbox{var}}}{\mathrm{Var}[\psi(g_1, \cdots, g_t)]}}
+\]
+위에서 \( \mathrm{Var}[\psi(.)] \) 값을 구했지만 수치적으로 불안정하므로 \( \sqrt{\psi^2(.)} \) 에 대한 1차 근사(세번째 근사)를 이용해서 다시 구하면 다음과 같습니다.
+\[ \mathrm{Var}[\psi(.)] \approx \frac{\rho_t}{2(\rho_t - 2)(\rho_t - 4)\sigma^2} \]
+분산을 \( C_{\mbox{var}} \)로 일정하게 유지시키는 \( r_t \) 값은 다음과 같습니다.
+\[
+r_t = \sqrt{\frac{(\rho_t - 4)(\rho_t - 2)\rho_\infty}{(\rho_\infty - 4)(\rho_\infty - 2)\rho_t}}
+\]
+단 \(\rho_t\)가 4보다 작을 경우 adaptive learning rate는 무시합니다. 이를 정리해 적용한 알고리즘은 다음과 같습니다.
+&lt;img src=&quot;https://www.dropbox.com/s/lnmad7y7hac01q7/algorithm.png?raw=1&quot; alt=&quot;Algorithm 2&quot; /&gt;
+위와 같이 Adam의 분산을 일정하게 만들어주는 방법을 통해 RAdam이라는 새로운 방법을 제안합니다.&lt;/p&gt;
+&lt;h3 id=&quot;in-comparison-with-warmup&quot;&gt;In comparison with warmup&lt;/h3&gt;
+&lt;p&gt;저자는 \( r_t \)가 결국 gradient에 \( \frac{min(t, T_w)}{T_w} \)을 곱하는 heuristic linear warmup과 비슷한 역할을 한다고 말합니다. 하지만 RAdam은 \( T_w \)와 같은 hyperparameter를 추가로 필요하지 않는 장점이 있습니다. 또한 뒤에서 살펴볼 실험 결과에 따르면 Adam-warmup은 learning rate를 증가시킬 step 수에 따라 learning rate에 민감함을 보이고, RAdam은 robust함을 보입니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;results&quot;&gt;Results&lt;/h2&gt;
+&lt;p&gt;저자는 Language Modeling을 평가하기 위해 One Billion Word 데이터셋을, Image Classification을 평가하기 위해 Cifar10 와 ImageNet 데이터셋을 사옹했습니다.&lt;/p&gt;
+
+&lt;h3 id=&quot;radam-vs-vanila-adam-vs-sgd&quot;&gt;RAdam vs Vanila Adam vs SGD&lt;/h3&gt;
+&lt;p&gt;저자는 먼저 vanila Adam과 비교해 RAdam이 더 좋은 성능을 내는 것을 보입니다.
+&lt;img src=&quot;https://www.dropbox.com/s/fbrghwh9tjiddyq/result3.png?raw=1&quot; alt=&quot;Result1&quot; /&gt;
+또한 learning rate의 변화에 robust함을 보입니다.
+&lt;img src=&quot;https://www.dropbox.com/s/1u2gbp19lu981zm/result4.png?raw=1&quot; alt=&quot;Result2&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;radam-vs-adam-warmup&quot;&gt;RAdam vs Adam-warmup&lt;/h3&gt;
+&lt;p&gt;RAdam은 위에서 말했듯이 Adam-warmup과 달리 처음에 learning rate를 증가시킬 step수를 지정하지 않아도 되므로 hyper-parameter가 하나 더 적습니다. 또한 Adam-warmup은 learning rate를 증가시킬 step 수에 따라 learning rate에 민감함을 보이고, RAdam은 robust함을 보입니다.
+&lt;img src=&quot;https://www.dropbox.com/s/l6az85a1i2r8mep/result5.png?raw=1&quot; alt=&quot;Result3&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;느낀점&quot;&gt;느낀점&lt;/h2&gt;
+&lt;p&gt;optimization에 관련된 논문은 처음으로 읽어봤습니다. Adam이 나온 이후로 모든 task에 general하게 잘 작동하는 optimizer가 나오지 않은것으로 알고 있습니다. 새로운 시각으로 접근해서 재밌었고 논문에서 이론적 증명을 통해 RAdam의 정당성을 보여준 점이 좋았습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://medium.com/@lessw/new-state-of-the-art-ai-optimizer-rectified-adam-radam-5d854730807b&quot;&gt;New State of the Art AI Optimizer: Rectified Adam (RAdam). - Less Wright&lt;/a&gt;&lt;/p&gt;</content><author><name>Jinho Lee</name><email>elzinomaster@gmail.com</email></author><category term="deep learning" /><category term="optimizer" /><summary type="html">논문 링크 : arxiv 저자 코드 : Author’s code 카카오 블라인드 공채에 지원해서 온라인, 오프라인 코딩테스트를 넘고 나니 회사별 과제가 주어졌습니다. 저는 카카오 브레인에 지원해서, RAdam 논문을 읽고 요약한 뒤 카카오에서 제공한 코드를 개선하라는 과제를 받았습니다. 비록 떨어지긴 했지만(:cry:) 너무나도 재밌는 논문이었습니다. 논문 내용들을 요약해 보았습니다.</summary></entry><entry><title type="html">2019 NAVER AI HACKATHON SPEECH 참가 후기</title><link href="http://localhost:4000/projects/2019-11-16/naver-ai-hackathon-review" rel="alternate" type="text/html" title="2019 NAVER AI HACKATHON SPEECH 참가 후기" /><published>2019-11-16T00:00:00+09:00</published><updated>2019-11-16T00:00:00+09:00</updated><id>http://localhost:4000/projects/2019-11-16/naver-ai-hackathon-review</id><content type="html" xml:base="http://localhost:4000/projects/2019-11-16/naver-ai-hackathon-review">&lt;p&gt;2019년 9월 중순부터 10월 중순까지 약 한 달가량 진행된 &lt;a href=&quot;https://campaign.naver.com/aihackathon_speech/&quot; target=&quot;_blank&quot;&gt;NAVER AI HACATHON&lt;/a&gt;에 참여하였습니다! 이번 해커톤의 주제는 한국어 음성인식으로 네이버에서 공개한 50000쌍의 한국어 전화망 데이터를 이용해 진행하였습니다. 대학교 친구인 &lt;a href=&quot;https://github.com/psi9730&quot; target=&quot;_blank&quot;&gt;박승일&lt;/a&gt;군과 함께 행복코딩 팀으로 참여해 100팀 중 9등이라는 성과를 거두었습니다! 와아~ :clap: 처음 참가해보는 해커톤이였고 음성인식분야도 잘 몰랐었는데 좋은 성적을 거두어서 기분 좋게 마무리 할 수 있었습니다. 참가신청부터 결선까지 어떻게 준비하고 참여하였는지 후기로 남겨보려고 합니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;배경지식-탐색&quot;&gt;배경지식 탐색&lt;/h2&gt;
+&lt;p&gt;서류 통과 메일을 받은 후부터 본격적으로 Speech Recognition 분야를 survey 해보았습니다.
+제일 먼저 이 부분의 SOTA를 찾아보기위해 &lt;a href=&quot;https://paperswithcode.com/task/speech-recognition&quot; target=&quot;_blank&quot;&gt;Paper with code&lt;/a&gt; 사이트에서 Dataset별로 어떤 연구가 진행되었는지 찾아보았습니다.(Paper with code 짱짱 ㅎㅎ)&lt;br /&gt;
+그 후 우선적으로 다음 논문들을 읽어보았습니다.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1412.5567&quot; target=&quot;_blank&quot;&gt;Deep Speech&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1512.02595&quot; target=&quot;_blank&quot;&gt;Deep Speech 2&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1508.01211&quot; target=&quot;_blank&quot;&gt;Listen, Attend and Spell&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arxiv.org/abs/1904.08779&quot; target=&quot;_blank&quot;&gt;SpecAugment&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;또한 Deep Speech를 만든 바이두에서 강연한 &lt;a href=&quot;https://www.youtube.com/watch?v=9dXiAecyJrY&amp;amp;feature=youtu.be&amp;amp;t=13874&quot; target=&quot;_blank&quot;&gt;영상&lt;/a&gt;이 있는데 기존의 전통적인 Speech Recognition 방식에서 벗어나, 어떻게 딥러닝을 사용해 성공적으로 성능을 끌어 올렸는지 쉽게 설명해주십니다. CTC loss, Language Model 등 Deep Speech에서 사용된 개념뿐만 아니라 음성인식 분야에 전반적인 이해를 돕는 영상이라 처음 이 분야를 공부하시려는 분들한테 강추드립니다! :thumbsup:&lt;br /&gt;
+Deep Speech, Deep Speech 2는 CTC loss를 사용하였고 Listen, Attend and Spell은 encoder-decoder 방식을 사용하였습니다. 저는 survey 당시 SOTA였던 SpecAugment 방식을 사용하고 싶었고 Naver에서 제공한 &lt;a href=&quot;https://github.com/clovaai/speech_hackathon_2019&quot; target=&quot;_blank&quot;&gt;baseline code&lt;/a&gt;도 encoder-decoder 방식을 사용하고 있었기 때문에 encoder-decoder 방식을 사용하기로 결정하였습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;예선&quot;&gt;예선&lt;/h2&gt;
+&lt;h4 id=&quot;nsml&quot;&gt;NSML&lt;/h4&gt;
+&lt;p&gt;예선이 시작하고 제일 당황스러웠던 것은 로컬에서 잘 돌아가는 모델이 NSML(Naver에서 제공한 딥러닝용 클라우드)에 올리면 잘 안돌아가는 것이였습니다. Librosa 라이브러리를 사용해 mel-spectrogram으로 변환하려고 하였는데 segmentation 오류가 나면서 세션이 죽어버리곤 했습니다. 아무리 디버깅을 해도 이유를 알 수 없어 포기하고 torchaudio를 쓰려던 차에 library간 버전 충돌 때문임을 알고 docker 설정을 바꿔 해결하였습니다.&lt;/p&gt;
+&lt;h4 id=&quot;모델-구조-수정-data-전처리-label-smooth&quot;&gt;모델 구조 수정, Data 전처리, label smooth&lt;/h4&gt;
+&lt;p&gt;예선 초반에 Listen, Attend and Spell 방식으로 encoder-decoder에 attention을 달고 테스트 해보니 6등으로 출발했습니다. 본선 진출은 문제 없겠다라고 생각했는데 그 이후로 시도하는 것마다 성능 향상을 보이지 못해 28등까지 떨어졌습니다. 이때 이번 해커톤에서 결과를 평가할때 공백을 제거하고 비교하는 점에서 착안해 모델이 아예 공백을 예측하지 않도록 바꾸니 큰 성능향상이 이뤄져서 등수를 많이 올릴 수 있었습니다. 추가로 label smooth, 데이터 전처리(특수문자 제거) 등을 통해서 성능을 더 올려 예선을 8위로 마무리하였습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;결선&quot;&gt;결선&lt;/h2&gt;
+&lt;p&gt;결선은 온라인 결선과 오프라인 결선으로 나누어 진행되었습니다. 온라인 결선에서는 예선에서 제공되었던 3만쌍에 데이터에다 추가로 2만쌍의 데이터가 더 공개되었습니다.&lt;/p&gt;
+
+&lt;h4 id=&quot;오프라인-결선&quot;&gt;오프라인 결선&lt;/h4&gt;
+&lt;p&gt;오프라인 결선은 춘천에 있는 네이버 커넥트원 건물에서 진행되었습니다. 처음 들어가자마자 토니 스타크가 살 것 같다고 말했을 만큼 건물이 깔끔하고 멋있게 지어져 있더라고요
+&lt;img src=&quot;https://www.dropbox.com/s/vmeb4rs78p8kuo5/%EC%9B%B0%EC%BB%B4%EA%B8%B0%ED%94%84%ED%8A%B8.jpg?raw=1&quot; alt=&quot;네이버 웰컴 기프트&quot; /&gt;
+처음 갔을때 받은 명찰과 웰컴 기프트에요! 저 초록색 동그란 건 손목 운동할 때 쓰는 거더라고요.&lt;br /&gt;
+&lt;img src=&quot;https://www.dropbox.com/s/mw2thubrnflbt3f/snack.jpg?raw=1&quot; alt=&quot;간식&quot; /&gt;
+해커톤 기간동안 무제한으로 먹을 수 있던 간식입니다! 그런데 저 간식 말고도 중간에 떡볶이, 튀김, 콜팝, 치즈볼등 맛있는 간식들을 너무 많이 주셔서 저것들은 별로 안먹었던거 같아요!&lt;br /&gt;
+&lt;img src=&quot;https://www.dropbox.com/s/imvo1l9mnjdw35i/lunch.jpg?raw=1&quot; alt=&quot;점심&quot; /&gt;
+&lt;img src=&quot;https://www.dropbox.com/s/8uijyxtfsph16pc/dinner.jpg?raw=1&quot; alt=&quot;저녁&quot; /&gt;
+점심과 저녁입니다. 정말 정말 맛있었어요 ㅎㅎ 역시 대기업인가 싶더라고요. 덕분에 맛있게 먹고 해커톤에 집중할 수 있었습니다!&lt;br /&gt;
+&lt;img src=&quot;https://www.dropbox.com/s/iu4x8s85yq0n4wi/dorm.jpg?raw=1&quot; alt=&quot;숙소&quot; /&gt;
+숙소도 너무 좋았어요. 호텔에 와있는 느낌 ㅎㅎ 클로바 스피커도 처음 사용해 봤는데 너무 신기하더라고요. 이번 해커톤 주제가 음성인식이라 더 신기했던거 같아요.&lt;br /&gt;
+&lt;img src=&quot;https://raw.githubusercontent.com/elzino/naver_ai_hackathon_speech/master/docs/final-board.png&quot; alt=&quot;랭킹&quot; /&gt;&lt;br /&gt;
+오프라인 결선 기간 동안 어떻게 모델을 개선할지 고민을 많이 했어요. 결론적으로 예선 기간동안 구현했지만 이상하게 성능이 오르지 않았던 빔서치를 좀 더 살펴보았습니다. 그러던 중 빔서치 로직에서 버그를 찾을 수 있었고 버그를 고치니 인식률이 4퍼센트 가량 올랐습니다! 결국 오프라인 결선 시작할 때 11등까지 떨어졌었는데 다시 올려 9등으로 마무리하였습니다. ㅎㅎ&lt;/p&gt;
+
+&lt;p&gt;오프라인 결선이 끝나고 1, 2, 3등 팀과 질의 응답시간이 있었습니다. librosa를 이용해 음성파일 앞, 뒤에 있는 침묵을 제거했다는 점, naver에서 weight initialization 관련해서 함정코드를 심어놓았다는 점이 인상깊었습니다. 그리고 무엇보다 1등팀이 training set, valid set을 나눌 때 화자, 스크립트를 고려해서 나눈점이 인상깊었습니다. 해커톤 기간 내내 validation error 와 test error가 비례하지 않아서 이상하다고 생각했는데 화자 및 스크립트에 overfitting 된 점이 문제였습니다. 기본이지만 간과하고 있던 부분이였습니다.&lt;/p&gt;
+
+&lt;h2 id=&quot;느낀점&quot;&gt;느낀점&lt;/h2&gt;
+&lt;p&gt;이번 해커톤에 참여하여서 처음으로 딥러닝 분야 중 한 task에 몰두해서 모델을 학습시키고 개선해보았습니다. 스피치 분야의 매력도 새롭게 알게 되었고 관심을 갖게 되었습니다.&lt;br /&gt;
+또한 성능향상을 위해 모델에만 집중하였는데 결국 모델을 향상시키기 위해선 데이터를 잘 이해하는것이 우선인 것을 다시 한 번 깨닫게 되었습니다. weight initialization과 같은 deep learning의 기본의 중요성도 다시 깨닫게 되었습니다.&lt;br /&gt;
+제가 많이 성장할 수 있었고 무엇보다 즐겁게 참여하여서 너무 행복한 시간이였습니다.&lt;br /&gt;
+좋은 행사를 마련해준 네이버측에 감사를 표합니다!&lt;/p&gt;
+
+&lt;p&gt;추가로 저희팀의 코드 레포지토리 링크를 첨부합니다&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/elzino/naver_ai_hackathon_speech&quot; target=&quot;_blank&quot;&gt;행복코딩팀의 hackathon code link&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Jinho Lee</name><email>elzinomaster@gmail.com</email></author><category term="hackathon" /><category term="deep learning" /><category term="speech recognition" /><summary type="html">2019년 9월 중순부터 10월 중순까지 약 한 달가량 진행된 NAVER AI HACATHON에 참여하였습니다! 이번 해커톤의 주제는 한국어 음성인식으로 네이버에서 공개한 50000쌍의 한국어 전화망 데이터를 이용해 진행하였습니다. 대학교 친구인 박승일군과 함께 행복코딩 팀으로 참여해 100팀 중 9등이라는 성과를 거두었습니다! 와아~ :clap: 처음 참가해보는 해커톤이였고 음성인식분야도 잘 몰랐었는데 좋은 성적을 거두어서 기분 좋게 마무리 할 수 있었습니다. 참가신청부터 결선까지 어떻게 준비하고 참여하였는지 후기로 남겨보려고 합니다.</summary></entry></feed>
