@@ -14,7 +14,7 @@ rm -rf _site
 mkdir _site
 
 # clone remote repo to "_site"
-git clone https://${GH_TOKEN}@github.com/ayastreb/11route.git --branch gh-pages _site
+git clone https://${GH_TOKEN}@github.com/elzino/elzino.github.io.git _site
 
 # build with Jekyll into "_site"
 bundle exec jekyll build
