@@ -6,6 +6,9 @@
     display:block;
     margin:auto;
     height: 300px;
+    @media (max-width: 600px) {
+        height: 200px;
+    }
 }
 
 .no_posts_description {
