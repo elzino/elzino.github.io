@@ -11,8 +11,8 @@ $shadow-color: rgba(0, 0, 0, .2);
 $code-color: #bf616a;
 
 // Fonts
-@font-face { font-family: 'NanumSquareR'; src: url('../../assets/fonts/NanumSquareR.ttf') format('truetype'); }
-@font-face { font-family: 'NanumSquareEB'; src: url('../../assets/fonts/NanumSquareEB.ttf') format('truetype'); }
+@font-face { font-family: 'NanumSquareR'; src: url('./fonts/NanumSquareR.woff') format('woff'); }
+@font-face { font-family: 'NanumSquareEB'; src: url('./fonts/NanumSquareEB.woff') format('woff'); }
 
 $serif-primary: 'Libre Baskerville', 'Noto Serif KR', 'Times New Roman', Times, serif;
 $serif-secondary: Palatino, 'Palatino LT STD', 'Palatino Linotype', 'Book Antiqua', 'Nanum Myeongjo', 'Georgia', serif;
