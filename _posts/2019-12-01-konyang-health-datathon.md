@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "2019 건양 헬스 데이터톤 참가 후기"
+title:  "2019 건양 헬스 데이터톤 우승 후기"
 categories: "projects"
 tags:
   - "hackathon"
