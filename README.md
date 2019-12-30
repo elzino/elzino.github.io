@@ -5,7 +5,7 @@
 ## 올린 글들
 ### Projects
 - [2019/11/16 - 2019 NAVER AI HACKATHON SPEECH 참가 후기](http://elzino.github.io/projects/2019-11-16/naver-ai-hackathon-review)
-- [2019/12/01 - 2019 건양 헬스 데이터톤 참가 후기](http://elzino.github.io/projects/2019-12-01/konyang-health-datathon)
+- [2019/12/01 - 2019 건양 헬스 데이터톤 우승 후기](http://elzino.github.io/projects/2019-12-01/konyang-health-datathon)
 ### Paper Reviews
 - [2019/11/21 - RAdam : On the Variance of the Adaptive Learning Rate and Beyond](http://elzino.github.io/papers/2019-11-21/radam)
 - [2019/12/30 - [번역] 딥러닝 분산 학습을 알아보자(Intro to Distributed Deep Learning Systems)](http://elzino.github.io/papers/2019-12-30/intro-to-distributed-deep-learning-systems)
