@@ -1,6 +1,11 @@
 .post {
   padding: 2.5rem 0;
 
+  hr {
+    opacity: 0.4;
+    padding-top: 1rem;
+  }
+
   &-info {
     color: $default-tint;
     font-family: $serif-secondary;
