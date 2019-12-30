@@ -15,3 +15,4 @@
 - [Lookahead Optimizer: k steps forward, 1 step back](https://arxiv.org/abs/1907.08610)
 - [Parameter Server for Distributed Machine Learning](https://pdfs.semanticscholar.org/30e9/4e24d67994c5a8e2f20f852a51d28a720de2.pdf)
 - [Scaling Distributed Machine Learning with the Parameter Server](https://www.cs.cmu.edu/~muli/file/parameter_server_osdi14.pdf)
+- 블로그 만들기까지의 과정 (jekyll 커스터마이징)
