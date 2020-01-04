@@ -6,7 +6,6 @@ tags:
   - "deep learning"
   - "distributed deep learning"
 comments: true
-use_math: true
 ---
 
 
