@@ -3,6 +3,21 @@
   
     
     <url>
+      <loc>https://elzino.github.io/papers/2020-01-04/scaling-distributed-machine-learning-with-the-parameter-server</loc>
+      
+        <lastmod>2020-01-04T00:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>https://elzino.github.io/papers/2019-12-30/intro-to-distributed-deep-learning-systems</loc>
       
         <lastmod>2019-12-30T00:00:00+00:00</lastmod>
@@ -57,6 +72,114 @@
       
       
         <priority>0.5</priority>
+      
+    </url>
+    
+  
+  
+    
+    <url>
+      <loc>https://elzino.github.io/about/</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/assets/main.css</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/life/</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/papers/</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/projects/</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://elzino.github.io/feed.xml</loc>
+      
+        <lastmod>2020-01-04T05:04:44+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
       
     </url>
     
