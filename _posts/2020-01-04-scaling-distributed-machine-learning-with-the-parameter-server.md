@@ -95,9 +95,9 @@ fault tolerance와 dynamic scaling을 위해 노드들의 추가와 제거를 �
 
 ## Evaluation
 저자는 여러가지 적용 예시들에서 파라미터 서버를 실험해봅니다. 자세한 실험 조건이나 결과를 알고 싶으신 분들은 논문을 참고하는 것을 추천드립니다.
-[!convergence of sparse logistic regression](https://www.dropbox.com/s/8fucdcnhnvz7qes/convergence%20of%20sparse%20logistic%20regression.png?raw=1)
+![convergence of sparse logistic regression](https://www.dropbox.com/s/8fucdcnhnvz7qes/convergence%20of%20sparse%20logistic%20regression.png?raw=1)
 위 실험은 세가지 시스템이 같은 objective value에 도달할 때 까지 걸리는 시간을 측정해본 것입니다. System A, System B에 비해 더 빨리 수렴한 것을 확인 할 수 있습니다. 심지어 System B와는 같은 알고리즘을 사용했지만 network traffic을 낮추고 relaxed consistency model을 사용해 더 좋은 성능을 보인 것을 확인할 수 있습니다.
-[!time per worker spent on computation and waiting](https://www.dropbox.com/s/pk2xefi7p5hz4c2/time%20per%20worker%20spent%20on%20computation%20and%20waiting.png?raw=1)
+![time per worker spent on computation and waiting](https://www.dropbox.com/s/pk2xefi7p5hz4c2/time%20per%20worker%20spent%20on%20computation%20and%20waiting.png?raw=1)
 위 그래프는 relaxed consistency model 덕분에 워커 노드를 더 효율적으로 사용할 수 있게 됨을 보여줍니다. 전의 task들이 끝나는 것을 기다리지 않고 다음 것을 처리함으로써 delay를 최소화 할 수 있습니다.
 
 ## Conclusion
