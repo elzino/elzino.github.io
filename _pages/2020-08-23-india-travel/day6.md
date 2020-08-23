@@ -38,5 +38,5 @@ permalink: /2020-08-23/india-travel/day6/
 피곤이 몰려와 오늘은 씻지 않고 바로 잠들었다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

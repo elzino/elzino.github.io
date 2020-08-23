@@ -29,5 +29,5 @@ permalink: /2020-08-23/india-travel/day4/
 끝나고 민호와 라씨를 먹으려 했지만 이미 다 팔리고 없어서 맥주를 사서 숙소로 왔다. 오늘도 게스트하우스 다른 분들이랑 친해지지 못했다. 내일은 그래도 편하게 말을 주고 받았으면 좋겠다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

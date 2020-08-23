@@ -34,5 +34,5 @@ permalink: /2020-08-23/india-travel/day7/
 아름다운 밤이었다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

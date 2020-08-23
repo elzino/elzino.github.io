@@ -28,5 +28,5 @@ permalink: /2020-08-23/india-travel/day5/
 숙소로 돌아와 다음날 아침 비행기를 타러 가야되서 짐을 싸고 잤다. 바라나시 마지막 날이라는 점이 아쉬웠다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

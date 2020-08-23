@@ -30,5 +30,5 @@ LG 게스트하우스에서 콘프레이크로 아침을 먹었다. 민호를 �
 숙소로 돌아와 하트시그널을 봤다. 보고 나서 잘 시간이 되니 이제 내일이 인도를 제대로 보는 마지막 날이란게 실감이 났다. 그러면서도 먼가 빨리 한국 돌아가고 싶은 설렘이 들었다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

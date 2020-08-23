@@ -40,5 +40,5 @@ permalink: /2020-08-23/india-travel/day2/
 돌아와서 저녁으로 인도방랑기에서 한식과 라씨를 먹고 숙소로 왔다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

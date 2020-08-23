@@ -42,5 +42,5 @@ permalink: /2020-08-23/india-travel/day1/
 ![길위에 다니는 소들](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Ff6c70fdd-9c93-400b-9f95-5c02d0c1d7d0%2FP20180311_101154386_DA56B3CB-3A12-4AA3-8259-B41B98F00A8A.jpg?table=block&id=a4fde27a-7359-43e4-af1a-f294ab89fdb6&width=1150&userId=&cache=v2){: class="india" }
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>

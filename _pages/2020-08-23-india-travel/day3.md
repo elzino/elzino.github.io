@@ -34,5 +34,5 @@ permalink: /2020-08-23/india-travel/day3/
 보는 걸 마치고 게스트 하우스에 와서 라면을 먹었다. 오늘은 인도음식을 하나도 안먹고 맥날, 라면만 먹엇다 ㅋㅋㅋ 핸드폰을 조금 하다가 너무 피곤해서 잠들어 버렸다. 중간에 깨니 민호는 게스트하우스 사람들이랑 조금 얘기를 하다가 왔다고 한다. 내일은 여유롭게 바라나시를 즐기려 한다.
 
 <div style="text-align: center; padding-top: .5rem;">
-<a href="/life/2020-08-23/india-travel/">돌아가기</a>
+<a href="/life/2020-08-23/india-travel">돌아가기</a>
 </div>
