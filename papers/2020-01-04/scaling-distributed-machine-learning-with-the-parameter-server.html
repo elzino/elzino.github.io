@@ -7,7 +7,7 @@
 
   <title>Scaling Distributed Machine Learning with the Parameter Server 리뷰</title>
   <!-- Begin Jekyll SEO tag v2.5.0 -->
-<meta name="generator" content="Jekyll v3.8.6" />
+<meta name="generator" content="Jekyll v3.9.0" />
 <meta property="og:title" content="Scaling Distributed Machine Learning with the Parameter Server 리뷰" />
 <meta name="author" content="Jinho Lee" />
 <meta property="og:locale" content="en_US" />
@@ -19,7 +19,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-01-04T00:00:00+00:00" />
 <script type="application/ld+json">
-{"headline":"Scaling Distributed Machine Learning with the Parameter Server 리뷰","dateModified":"2020-01-04T00:00:00+00:00","datePublished":"2020-01-04T00:00:00+00:00","author":{"@type":"Person","name":"Jinho Lee"},"description":"논문 링크 : pdf","mainEntityOfPage":{"@type":"WebPage","@id":"https://elzino.github.io/papers/2020-01-04/scaling-distributed-machine-learning-with-the-parameter-server"},"@type":"BlogPosting","url":"https://elzino.github.io/papers/2020-01-04/scaling-distributed-machine-learning-with-the-parameter-server","@context":"http://schema.org"}</script>
+{"headline":"Scaling Distributed Machine Learning with the Parameter Server 리뷰","dateModified":"2020-01-04T00:00:00+00:00","datePublished":"2020-01-04T00:00:00+00:00","author":{"@type":"Person","name":"Jinho Lee"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://elzino.github.io/papers/2020-01-04/scaling-distributed-machine-learning-with-the-parameter-server"},"description":"논문 링크 : pdf","@type":"BlogPosting","url":"https://elzino.github.io/papers/2020-01-04/scaling-distributed-machine-learning-with-the-parameter-server","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -137,7 +137,7 @@
 <p>기본적으로 모델을 이루는 파라미터들을 key, value를 이용해 표현할 수 있습니다. feature ID가 key가 되고 weight가 value가 될 것입니다. 그런데 이 프레임워크는 머신러닝에서 linear algebra object들을 주로 다룬다는 점에 주목합니다. 따라서 key, value를 이용해 파라미터들을 저장하는 동시에 key가 없는 부분들을 0으로 취급해 벡터와 행렬로 표현할 수 있게 합니다. 이를 통해 여러 선형 대수 연산들을 최적화 할 수 있게 합니다.</p>
 
 <h3 id="range-push-and-pull">Range Push and Pull</h3>
-<p>노드 간에 데이터를 주고 받을 때 <code class="highlighter-rouge">push</code>나 <code class="highlighter-rouge">pull</code> 연산을 사용합니다. 이때 range를 사용하면 효율적으로 network bandwidth를 사용할 수 있습니다. Range 안에 있는 key들에 해당하는 value들을 보내고 받을 수 있습니다. gradient도 파라미터와 같은 key를 사용하므로 <code class="highlighter-rouge">w.push(R, g, destination)</code> 과 같이 range를 사용해서 주고 받을 수 있습니다.</p>
+<p>노드 간에 데이터를 주고 받을 때 <code class="language-plaintext highlighter-rouge">push</code>나 <code class="language-plaintext highlighter-rouge">pull</code> 연산을 사용합니다. 이때 range를 사용하면 효율적으로 network bandwidth를 사용할 수 있습니다. Range 안에 있는 key들에 해당하는 value들을 보내고 받을 수 있습니다. gradient도 파라미터와 같은 key를 사용하므로 <code class="language-plaintext highlighter-rouge">w.push(R, g, destination)</code> 과 같이 range를 사용해서 주고 받을 수 있습니다.</p>
 
 <h3 id="user-defined-functions-on-the-server">User-Defined Functions on the Server</h3>
 <p>워커에서 데이터를 처리하는 것 뿐 아니라, 서버에서도 유저가 정의한 함수를 실행할 수 있습니다. regularizer나 proximal operator등을 계산할 때 유용하게 쓰일 수 있습니다.</p>
@@ -299,7 +299,7 @@ Range에 있지만 message에 포함되지 않은 key-value도 같은 timestamp�
         </svg>
       </a>
       <span class="copyright">
-        &copy; <time datetime="2020-01-08 08:00:00 +0000">2020</time> Jinho Lee.
+        &copy; <time datetime="2020-08-23 06:22:27 +0000">2020</time> Jinho Lee.
       </span>
     </div>
 
