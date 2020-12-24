@@ -21,8 +21,6 @@ permalink: /2020-08-23/india-travel/day1/
 
 특히 27개의 아치로 구성된 건물이 흥미로웠다. 이 곳에서는 대리석으로 구성된 왕좌 또한 볼 수 있었다.
 
-![레드포트에서 인도 친구들과](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8676a2d6-48f5-4440-861e-7cde030f79cf%2FP20180310_193653517_A5B9BE97-6D15-4546-B43C-BE2D5377BB13.jpg?table=block&id=57746e10-c9bd-4be4-bbe9-938264523c9c&width=1060&userId=&cache=v2){: class="india" }
-
 너무 혼잡하고, 시끄럽던 길가와 달리 레드포트는 한적한 기분이 들었다. 나무의 그늘에서 여유롭게 쉬다가 세명의 인도인과 말을 붙이고 사진까지 찍었다.
 
 레드포트 관광을 마치고 찬드니 촉을 보러 갔다. 자전거 릭샤꾼을 만나서 타게 되었는데 자꾸 뭐라고 설명해주는데 이해가 되지 않았다. 그래도 찬드니촉의 엄청난 규모, 인파는 느낄 수 있었다.
